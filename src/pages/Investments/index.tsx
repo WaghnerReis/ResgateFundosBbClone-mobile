@@ -22,8 +22,15 @@ const Investments: React.FC = () => {
         });
     }, [investmentsRequest]);
 
-    const goNextPage = useCallback(item => {
-        navigate('GetInvestment', {investment: item});
+    const goNextPage = useCallback((item: Investment) => {
+        if (item.indicadorCarencia === 'S') {
+            Alert.alert(
+                'Atenção',
+                'Fundos de investimentos em carência não pode realizar resgate',
+            );
+        } else {
+            navigate('GetInvestment', {investment: item});
+        }
     }, []);
 
     const renderItems: ListRenderItem<Investment> = ({item}) => (
