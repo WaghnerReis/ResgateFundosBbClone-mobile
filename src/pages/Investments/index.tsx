@@ -1,37 +1,42 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 
-import {FlatList} from 'react-native';
+import {useInvestment} from '../../hooks/investment';
 
-import ListItem from './components/ListItem';
+import {Investment} from '../../interfaces';
+
+import {FlatList, ListRenderItem, Alert, ActivityIndicator} from 'react-native';
+
 import {Header, CustomText} from '../../components';
+import ListItem from './components/ListItem';
 
-import {Container, HeaderList} from './styles';
+import {Container, HeaderList, EmptyContainer} from './styles';
+import {colors} from '../../styles';
+import {navigate} from '../../services/navigation';
 
 const Investments: React.FC = () => {
-    const data = [
-        {
-            nome: 'INVESTIMENTO I',
-            objetivo: 'Minha aposentadoria',
-            saldoTotal: 39321.29,
-        },
-        {
-            nome: 'INVESTIMENTO II',
-            objetivo: 'Viajem dos sonhos',
-            saldoTotal: 7300,
-        },
-        {
-            nome: 'INVESTIMENTO III',
-            objetivo: 'Abrir meu próprio negócio',
-            saldoTotal: 26000,
-        },
-        {
-            nome: 'INVESTIMENTO IV',
-            objetivo: 'Investimento em carencia',
-            saldoTotal: 44000,
-        },
-    ];
+    const {investmentsRequest, investments, loading} = useInvestment();
 
-    const renderItems = ({item}) => <ListItem item={item} />;
+    useEffect(() => {
+        investmentsRequest().catch((error: Error) => {
+            Alert.alert('Atenção', error.message);
+        });
+    }, [investmentsRequest]);
+
+    const goNextPage = useCallback(item => {
+        navigate('GetInvestment', {investment: item});
+    }, []);
+
+    const renderItems: ListRenderItem<Investment> = ({item}) => (
+        <ListItem item={item} onPress={() => goNextPage(item)} />
+    );
+
+    const renderEmptyComponent = () => (
+        <EmptyContainer>
+            <CustomText type="primaryLarge">
+                Nenhum investimento encontrado
+            </CustomText>
+        </EmptyContainer>
+    );
 
     return (
         <Container>
@@ -42,10 +47,15 @@ const Investments: React.FC = () => {
                 <CustomText type="secondaryLarge">R$</CustomText>
             </HeaderList>
 
+            {loading && (
+                <ActivityIndicator color={colors.primary} size={'large'} />
+            )}
+
             <FlatList
-                data={data}
-                keyExtractor={item => String(Math.random())}
+                data={investments}
+                keyExtractor={() => String(Math.random())}
                 renderItem={renderItems}
+                ListEmptyComponent={renderEmptyComponent}
             />
         </Container>
     );

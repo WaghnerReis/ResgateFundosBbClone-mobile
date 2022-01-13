@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {HeaderProvider} from './header';
+import {InvestmentProvider} from './investment';
 
 const AppProvider: React.FC = ({children}) => (
-    <HeaderProvider>{children}</HeaderProvider>
+    <InvestmentProvider>{children}</InvestmentProvider>
 );
 
 export default AppProvider;
