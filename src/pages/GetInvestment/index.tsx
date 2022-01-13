@@ -3,12 +3,12 @@ import {Text, View} from 'react-native';
 
 // import { Container } from './styles';
 
-const GetInvestiment: React.FC = () => {
+const GetInvestment: React.FC = () => {
     return (
         <View>
-            <Text>This is a Get Investiment Screen</Text>
+            <Text>This is a Get Investment Screen</Text>
         </View>
     );
 };
 
-export default GetInvestiment;
+export default GetInvestment;
