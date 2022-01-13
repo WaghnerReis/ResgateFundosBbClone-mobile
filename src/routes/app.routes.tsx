@@ -2,8 +2,8 @@ import React from 'react';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import Investiments from '../pages/Investiments';
-import GetInvestiment from '../pages/GetInvestiment';
+import Investments from '../pages/Investments';
+import GetInvestment from '../pages/GetInvestment';
 
 const AppStack = createNativeStackNavigator();
 
@@ -14,14 +14,14 @@ const defaultOptions = {
 const AppRoutes: React.FC = () => (
     <AppStack.Navigator>
         <AppStack.Screen
-            name="Investiments"
-            component={Investiments}
+            name="Investments"
+            component={Investments}
             options={defaultOptions}
         />
 
         <AppStack.Screen
-            name="GetInvestiment"
-            component={GetInvestiment}
+            name="GetInvestment"
+            component={GetInvestment}
             options={defaultOptions}
         />
     </AppStack.Navigator>
