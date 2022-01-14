@@ -7,6 +7,7 @@ import {colors} from '../../styles';
 const customTextTypeVariations = {
     primarySmall: css`
         font-size: 16px;
+        font-weight: 500;
 
         color: ${colors.primaryText};
     `,
