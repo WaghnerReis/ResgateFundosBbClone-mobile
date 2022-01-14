@@ -11,3 +11,9 @@ export const numberToCurrencyWithR$ = (number: number) => {
         maximumFractionDigits: 2,
     });
 };
+
+export const extractStockAcronym = (text: string) => {
+    const regex = /\((.*?)\)/;
+    const [_, group1] = text.match(regex);
+    return group1;
+};
