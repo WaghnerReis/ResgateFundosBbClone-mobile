@@ -2,6 +2,7 @@ const colors = {
     primary: '#005AA5',
     accent: '#FAE128',
 
+    transparentBackground: '#00000080',
     background: '#F4F4F4',
 
     primaryText: '#494949',

@@ -1,13 +1,7 @@
 import React, {createContext, useCallback, useContext, useState} from 'react';
-import {RegisterInputProps} from '../../interfaces';
 
-interface TotalAmountContextData {
-    totalAmount: number;
-    setTotalAmountValue(value: number): void;
-    initCount(): void;
-    cleanCount(): void;
-    registerInputs(input: RegisterInputProps): void;
-}
+import {InputProps} from '../../interfaces';
+import {TotalAmountContextData} from '../interfaces';
 
 const TotalAmountContext = createContext<TotalAmountContextData>(
     {} as TotalAmountContextData,
@@ -19,7 +13,7 @@ export const TotalAmountProvider: React.FC = ({children}) => {
     >(new Map());
     const [totalAmount, setTotalAmount] = useState(0);
 
-    const initCount = useCallback(() => {
+    const updateTotalAmount = useCallback(() => {
         let total = 0;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [_, value] of registeredInputs) {
@@ -35,28 +29,31 @@ export const TotalAmountProvider: React.FC = ({children}) => {
     }, []);
 
     const registerInputs = useCallback(
-        (input: RegisterInputProps) => {
-            registeredInputs.set(input.id, input.initialValue);
+        (input: InputProps) => {
+            registeredInputs.set(input.id, input.value);
             setRegisteredInputs(registeredInputs);
         },
         [registeredInputs],
     );
 
-    const setTotalAmountValue = useCallback(
-        value => {
-            setTotalAmount(totalAmount + value);
+    const updateAmountValue = useCallback(
+        (input: InputProps) => {
+            registeredInputs.set(input.id, input.value);
+            setRegisteredInputs(registeredInputs);
+
+            updateTotalAmount();
         },
-        [totalAmount],
+        [updateTotalAmount, registeredInputs],
     );
 
     return (
         <TotalAmountContext.Provider
             value={{
                 totalAmount,
-                setTotalAmountValue,
                 registerInputs,
-                initCount,
+                updateTotalAmount,
                 cleanCount,
+                updateAmountValue,
             }}>
             {children}
         </TotalAmountContext.Provider>

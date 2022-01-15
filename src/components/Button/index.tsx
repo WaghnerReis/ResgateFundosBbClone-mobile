@@ -1,12 +1,12 @@
 import React from 'react';
-import {ButtomProps} from './interfaces';
+import {TouchableOpacityProps} from 'react-native';
 
 import {Container, Text} from './styles';
 
-const Buttom: React.FC<ButtomProps> = ({children, ...props}) => (
+const Button: React.FC<TouchableOpacityProps> = ({children, ...props}) => (
     <Container {...props}>
         <Text type="primaryLarge">{children}</Text>
     </Container>
 );
 
-export default Buttom;
+export default Button;
