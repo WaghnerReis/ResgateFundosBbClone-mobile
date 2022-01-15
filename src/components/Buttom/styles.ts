@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import {colors, metrics} from '../../styles';
 
-import CustomText from '../CustomText';
+import {CustomText} from '..';
 
 export const Container = styled.TouchableOpacity`
     justify-content: center;

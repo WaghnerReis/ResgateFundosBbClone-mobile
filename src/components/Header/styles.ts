@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import {colors, metrics} from '../../styles';
 
+import {CustomText} from '..';
+
 export const Container = styled.View`
     justify-content: center;
     align-items: center;
@@ -13,9 +15,8 @@ export const Container = styled.View`
     padding-right: ${metrics.paddingHorizontal};
 `;
 
-export const Title = styled.Text`
+export const Title = styled(CustomText)`
     font-size: 20px;
-    font-weight: bold;
 
     color: white;
 `;

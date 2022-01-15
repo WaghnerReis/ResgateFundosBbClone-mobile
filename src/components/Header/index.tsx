@@ -7,7 +7,7 @@ const Header: React.FC = ({children, ...props}) => {
     return (
         <View>
             <Container {...props}>
-                <Title>{children}</Title>
+                <Title type="primaryLarge">{children}</Title>
             </Container>
             <Divider />
         </View>
