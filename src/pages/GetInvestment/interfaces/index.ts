@@ -16,3 +16,10 @@ export interface ItemProps {
 export interface TitleContainerProps {
     paddingTop?: boolean;
 }
+export interface ModalProps {
+    visible: boolean;
+    title: string;
+    message: string;
+    buttonText: string;
+    buttonAction(): void;
+}

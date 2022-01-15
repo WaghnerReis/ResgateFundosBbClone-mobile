@@ -2,10 +2,13 @@ import React from 'react';
 
 import {InvestmentProvider} from './investment';
 import {TotalAmountProvider} from './totalAmount';
+import {InputErrorProvider} from './inputError';
 
 const AppProvider: React.FC = ({children}) => (
     <TotalAmountProvider>
-        <InvestmentProvider>{children}</InvestmentProvider>
+        <InputErrorProvider>
+            <InvestmentProvider>{children}</InvestmentProvider>
+        </InputErrorProvider>
     </TotalAmountProvider>
 );
 

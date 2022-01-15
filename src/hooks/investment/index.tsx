@@ -1,13 +1,9 @@
 import React, {createContext, useCallback, useContext, useState} from 'react';
+
 import {Investment} from '../../interfaces';
+import {InvestmentContextData} from '../interfaces';
 
 import api from '../../services/api';
-
-interface InvestmentContextData {
-    loading: boolean;
-    investments: Investment[];
-    investmentsRequest(): Promise<void>;
-}
 
 const InvestmentContext = createContext<InvestmentContextData>(
     {} as InvestmentContextData,

@@ -1,25 +1,44 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 
+import {goBack} from '../../services/navigation';
 import {formatter} from '../../util';
 
 import {useTotalAmount} from '../../hooks/totalAmount';
+import {useInputError} from '../../hooks/inputError';
 
 import {Stock} from '../../interfaces';
-import {GetInvestimentProps} from './interfaces';
+import {GetInvestimentProps, ModalProps} from './interfaces';
 
-import {FlatList, ListRenderItem} from 'react-native';
+import {Modal} from 'react-native';
 
-import {Header, CustomText, Buttom} from '../../components';
+import {Header, CustomText, Button} from '../../components';
 import {Card, ListItem, Divider} from './components';
 
-import {Container, TitleContainer, InvestmentData} from './styles';
+import {
+    Container,
+    TitleContainer,
+    InvestmentData,
+    ModalContainer,
+    ModalContent,
+    ModalTextsContainer,
+    ModalTitle,
+    ModalMessage,
+    ActionSection,
+    InfosSection,
+} from './styles';
 
 const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
-    const {totalAmount, initCount, cleanCount} = useTotalAmount();
+    const {totalAmount, updateTotalAmount, cleanCount} = useTotalAmount();
+    const {errors} = useInputError();
+
     const {investment} = route.params;
 
+    const [modal, setModal] = useState<ModalProps>({
+        visible: false,
+    } as ModalProps);
+
     useEffect(() => {
-        initCount();
+        updateTotalAmount();
         return () => {
             cleanCount();
         };
@@ -36,7 +55,78 @@ const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
         [investment.saldoTotal],
     );
 
-    const renderItems: ListRenderItem<Stock> = ({item}) => (
+    const handleBack = useCallback(() => goBack(), []);
+
+    const handleCloseModal = useCallback(
+        () => setModal({...modal, visible: false}),
+        [modal],
+    );
+
+    const handleFinish = useCallback(() => {
+        if (errors.size === 0) {
+            setModal({
+                visible: true,
+                title: 'RESGATE EFETUADO!',
+                message:
+                    'O valor solicitado estará em sua conta em até 5 dias úteis!',
+                buttonText: 'NOVO RESGATE',
+                buttonAction: handleBack,
+            });
+        } else {
+            const defaultMessage =
+                'Você preencheu um ou mais campos com valor acima do permitido:';
+            let errorValues = '';
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            for (const [_, value] of errors) {
+                errorValues += `${value}\n`;
+            }
+
+            const message = `${defaultMessage}\n\n${errorValues}`;
+
+            setModal({
+                visible: true,
+                title: 'DADOS INVÁLIDOS',
+                message,
+                buttonText: 'CORRIGIR',
+                buttonAction: handleCloseModal,
+            });
+        }
+    }, [errors, handleBack, handleCloseModal]);
+
+    const renderModal = useCallback(
+        () => (
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modal.visible}>
+                <ModalContainer>
+                    <ModalContent>
+                        <ModalTextsContainer>
+                            <ModalTitle type="primaryLarge">
+                                {modal.title}
+                            </ModalTitle>
+                            <ModalMessage type="secondarySmall">
+                                {modal.message}
+                            </ModalMessage>
+                        </ModalTextsContainer>
+
+                        <Button onPress={modal.buttonAction}>
+                            {modal.buttonText}
+                        </Button>
+                    </ModalContent>
+                </ModalContainer>
+            </Modal>
+        ),
+        [
+            modal.buttonAction,
+            modal.buttonText,
+            modal.message,
+            modal.title,
+            modal.visible,
+        ],
+    );
+
+    const renderItems = (item: Stock) => (
         <ListItem item={item} investment={investment} />
     );
 
@@ -44,57 +134,64 @@ const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
         <Container>
             <Header>Resgate</Header>
 
-            <TitleContainer paddingTop>
-                <CustomText type="secondaryLarge">
-                    DADOS DO INVESTIMENTO
-                </CustomText>
-            </TitleContainer>
-
-            <Card>
-                <InvestmentData>
-                    <CustomText type="primarySmall">Nome</CustomText>
+            <InfosSection>
+                <TitleContainer paddingTop>
                     <CustomText type="secondaryLarge">
-                        {investment.nome}
+                        DADOS DO INVESTIMENTO
                     </CustomText>
-                </InvestmentData>
+                </TitleContainer>
 
-                <Divider />
+                <Card>
+                    <InvestmentData>
+                        <CustomText type="primarySmall">Nome</CustomText>
+                        <CustomText type="secondaryLarge">
+                            {investment.nome}
+                        </CustomText>
+                    </InvestmentData>
 
-                <InvestmentData>
-                    <CustomText type="primarySmall">
-                        Saldo total disponível
-                    </CustomText>
+                    <Divider />
+
+                    <InvestmentData>
+                        <CustomText type="primarySmall">
+                            Saldo total disponível
+                        </CustomText>
+                        <CustomText type="secondaryLarge">
+                            {formattedMoneyValue}
+                        </CustomText>
+                    </InvestmentData>
+                </Card>
+
+                <TitleContainer>
                     <CustomText type="secondaryLarge">
-                        {formattedMoneyValue}
+                        RESGATE DO SEU JEITO
                     </CustomText>
-                </InvestmentData>
-            </Card>
+                </TitleContainer>
 
-            <TitleContainer>
-                <CustomText type="secondaryLarge">
-                    RESGATE DO SEU JEITO
-                </CustomText>
-            </TitleContainer>
+                {/* <FlatList
+                    data={investment.acoes}
+                    keyExtractor={item => item.id}
+                    renderItem={renderItems}
+                /> */}
 
-            <FlatList
-                data={investment.acoes}
-                keyExtractor={item => item.id}
-                renderItem={renderItems}
-            />
-            <Card>
-                <InvestmentData>
-                    <CustomText type="primarySmall">
-                        Valor total a resgatar
-                    </CustomText>
-                    <CustomText type="secondaryLarge">
-                        {formattedTotalAmount}
-                    </CustomText>
-                </InvestmentData>
-            </Card>
+                {investment.acoes.map(item => renderItems(item))}
+            </InfosSection>
 
-            <Buttom onPress={() => console.log('GO é Massa!!')}>
-                CONFIRMAR RESGATE
-            </Buttom>
+            <ActionSection>
+                <Card>
+                    <InvestmentData>
+                        <CustomText type="primarySmall">
+                            Valor total a resgatar
+                        </CustomText>
+                        <CustomText type="secondaryLarge">
+                            {formattedTotalAmount}
+                        </CustomText>
+                    </InvestmentData>
+                </Card>
+
+                <Button onPress={handleFinish}>CONFIRMAR RESGATE</Button>
+            </ActionSection>
+
+            {renderModal()}
         </Container>
     );
 };
