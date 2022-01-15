@@ -5,8 +5,7 @@ import {ItemProps} from '../../interfaces';
 
 import {CustomText} from '../../../../components';
 
-import Card from '../Card';
-import Divider from '../Divider';
+import {Card, Divider, Input} from '..';
 
 import {StockContainer} from './styles';
 
@@ -16,12 +15,14 @@ const ListItem: React.FC<ItemProps> = ({item, investment}) => {
         [item.nome],
     );
 
-    const formattedMoneyValue = useMemo(
-        () =>
-            formatter.numberToCurrency(
-                (item.percentual / 100) * investment.saldoTotal,
-            ),
+    const calculedValue = useMemo(
+        () => (item.percentual / 100) * investment.saldoTotal,
         [investment.saldoTotal, item.percentual],
+    );
+
+    const formattedMoneyValue = useMemo(
+        () => formatter.numberToCurrency(calculedValue),
+        [calculedValue],
     );
 
     return (
@@ -41,6 +42,15 @@ const ListItem: React.FC<ItemProps> = ({item, investment}) => {
             </StockContainer>
 
             <Divider />
+
+            <Input
+                id={formattedStock}
+                title="Valor a resgatar"
+                placeholder="Informe o valor"
+                initialValue={calculedValue}
+                limit={calculedValue}
+                formattedLimit={formattedMoneyValue}
+            />
         </Card>
     );
 };

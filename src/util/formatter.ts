@@ -1,15 +1,17 @@
-export const numberToCurrency = (number: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-    }).format(number);
-};
+export const numberToCurrency = (number: number, withoutR$ = false) => {
+    const format = new Map<string, string>([
+        ['style', 'currency'],
+        ['currency', 'BRL'],
+        ['minimumFractionDigits', '2'],
+        ['maximumFractionDigits', '2'],
+    ]);
 
-export const numberToCurrencyWithR$ = (number: number) => {
-    return number.toLocaleString('pt-br', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    });
+    if (withoutR$) {
+        format.delete('style');
+        format.delete('currency');
+    }
+
+    return number.toLocaleString('pt-br', Object.fromEntries(format));
 };
 
 export const extractStockAcronym = (text: string) => {

@@ -10,7 +10,7 @@ import {Container} from './styles';
 
 const ListItem: React.FC<ItemProps> = ({item, onPress}) => {
     const formattedValue = useMemo(
-        () => formatter.numberToCurrencyWithR$(item.saldoTotal),
+        () => formatter.numberToCurrency(item.saldoTotal, true),
         [item.saldoTotal],
     );
 
