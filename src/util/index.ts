@@ -1,12 +1,7 @@
-import {
-    numberToCurrency,
-    numberToCurrencyWithR$,
-    extractStockAcronym,
-} from './formatter';
+import {numberToCurrency, extractStockAcronym} from './formatter';
 
 const formatter = {
     numberToCurrency,
-    numberToCurrencyWithR$,
     extractStockAcronym,
 };
 

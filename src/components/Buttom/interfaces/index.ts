@@ -1,3 +1,5 @@
+import {SubmitHandler} from '@unform/core';
+
 export interface ButtomProps {
-    onPress: () => void;
+    onPress: SubmitHandler | undefined;
 }

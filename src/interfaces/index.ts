@@ -11,3 +11,7 @@ export interface Stock {
     nome: string;
     percentual: number;
 }
+export interface RegisterInputProps {
+    id: string;
+    initialValue: number;
+}
