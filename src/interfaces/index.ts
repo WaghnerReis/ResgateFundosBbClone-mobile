@@ -11,7 +11,11 @@ export interface Stock {
     nome: string;
     percentual: number;
 }
-export interface RegisterInputProps {
+export interface InputProps {
     id: string;
-    initialValue: number;
+    value: number;
+}
+export interface ErrorInputProps {
+    id: string;
+    message: string;
 }

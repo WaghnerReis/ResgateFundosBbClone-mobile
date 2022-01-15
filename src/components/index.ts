@@ -1,5 +1,5 @@
 import Header from './Header';
 import CustomText from './CustomText';
-import Buttom from './Buttom';
+import Button from './Button';
 
-export {Header, CustomText, Buttom};
+export {Header, CustomText, Button};
