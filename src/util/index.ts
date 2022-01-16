@@ -1,4 +1,4 @@
-import {numberToCurrency, extractStockAcronym} from './formatter';
+import {numberToCurrency, extractStockAcronym} from './Formatter';
 
 const formatter = {
     numberToCurrency,
