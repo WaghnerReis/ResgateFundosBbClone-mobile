@@ -47,7 +47,7 @@ const Investments: React.FC = () => {
 
     return (
         <Container>
-            <Header>Resgate</Header>
+            <Header testID="header">Resgate</Header>
 
             <HeaderList>
                 <CustomText type="secondaryLarge">INVESTIMENTOS</CustomText>
@@ -59,6 +59,7 @@ const Investments: React.FC = () => {
             )}
 
             <FlatList
+                testID="investmentList"
                 data={investments}
                 keyExtractor={() => String(Math.random())}
                 renderItem={renderItems}

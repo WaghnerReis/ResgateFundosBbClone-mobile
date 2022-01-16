@@ -28,7 +28,7 @@ import {
 } from './styles';
 
 const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
-    const {totalAmount, updateTotalAmount, cleanCount} = useTotalAmount();
+    const {totalAmount, updateTotalAmount, clearCount} = useTotalAmount();
     const {errors} = useInputError();
 
     const {investment} = route.params;
@@ -40,7 +40,7 @@ const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
     useEffect(() => {
         updateTotalAmount();
         return () => {
-            cleanCount();
+            clearCount();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -90,6 +90,8 @@ const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
                 buttonText: 'CORRIGIR',
                 buttonAction: handleCloseModal,
             });
+
+            console.log(message);
         }
     }, [errors, handleBack, handleCloseModal]);
 
@@ -102,10 +104,12 @@ const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
                 <ModalContainer>
                     <ModalContent>
                         <ModalTextsContainer>
-                            <ModalTitle type="primaryLarge">
+                            <ModalTitle testID="modalTitle" type="primaryLarge">
                                 {modal.title}
                             </ModalTitle>
-                            <ModalMessage type="secondarySmall">
+                            <ModalMessage
+                                testID="modalMessage"
+                                type="secondarySmall">
                                 {modal.message}
                             </ModalMessage>
                         </ModalTextsContainer>
@@ -127,14 +131,14 @@ const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
     );
 
     const renderItems = (item: Stock) => (
-        <ListItem item={item} investment={investment} />
+        <ListItem key={item.id} item={item} investment={investment} />
     );
 
     return (
         <Container>
             <Header>Resgate</Header>
 
-            <InfosSection>
+            <InfosSection testID="infosSection">
                 <TitleContainer paddingTop>
                     <CustomText type="secondaryLarge">
                         DADOS DO INVESTIMENTO
@@ -167,12 +171,6 @@ const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
                     </CustomText>
                 </TitleContainer>
 
-                {/* <FlatList
-                    data={investment.acoes}
-                    keyExtractor={item => item.id}
-                    renderItem={renderItems}
-                /> */}
-
                 {investment.acoes.map(item => renderItems(item))}
             </InfosSection>
 
@@ -188,7 +186,9 @@ const GetInvestment: React.FC<GetInvestimentProps> = ({route}) => {
                     </InvestmentData>
                 </Card>
 
-                <Button onPress={handleFinish}>CONFIRMAR RESGATE</Button>
+                <Button testID="confirmButton" onPress={handleFinish}>
+                    CONFIRMAR RESGATE
+                </Button>
             </ActionSection>
 
             {renderModal()}

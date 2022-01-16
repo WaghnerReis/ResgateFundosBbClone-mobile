@@ -15,7 +15,7 @@ export interface InvestmentContextData {
 export interface TotalAmountContextData {
     totalAmount: number;
     updateTotalAmount(): void;
-    cleanCount(): void;
+    clearCount(): void;
     registerInputs(input: InputProps): void;
     updateAmountValue(input: InputProps): void;
 }

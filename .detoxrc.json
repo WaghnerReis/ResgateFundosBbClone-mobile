@@ -10,5 +10,8 @@
           "avdName": "Pixel_2_API_29"
         }
       }
+    }, 
+    "artifacts":{
+        "rootDir": "./e2e/artifacts"
     }
   }
