@@ -23,7 +23,7 @@ export const TotalAmountProvider: React.FC = ({children}) => {
         setTotalAmount(total);
     }, [registeredInputs]);
 
-    const cleanCount = useCallback(() => {
+    const clearCount = useCallback(() => {
         setRegisteredInputs(new Map<string, number>());
         setTotalAmount(0);
     }, []);
@@ -52,7 +52,7 @@ export const TotalAmountProvider: React.FC = ({children}) => {
                 totalAmount,
                 registerInputs,
                 updateTotalAmount,
-                cleanCount,
+                clearCount,
                 updateAmountValue,
             }}>
             {children}
