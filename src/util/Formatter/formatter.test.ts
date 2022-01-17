@@ -10,7 +10,7 @@ describe('Formatter', () => {
 
     it('Should be return the value with currency format', () => {
         const currency = formatter.numberToCurrency(10);
-        expect(currency).toBe('R$ 10,00');
+        expect(currency).toBe('R$\xa010,00');
     });
 
     it('Should be return the value with currency format without R$', () => {

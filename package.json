@@ -6,7 +6,9 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --maxWorkers=50%",
+    "test:watch": "jest --watch --maxWorkers=25%",
+    "test:ci": "jest --runInBand",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "detox": "npx detox test -c android.emu.debug"
   },
