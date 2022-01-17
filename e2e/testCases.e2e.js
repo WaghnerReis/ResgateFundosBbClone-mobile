@@ -53,6 +53,7 @@ describe('Clicar em confirmar com mais de um campos a resgatar com valor invalid
             'DADOS INVÁLIDOS',
         );
 
+        //TODO Add regex to normalize \n and spaces, with this the test is successful
         await expect(element(by.id('modalMessage'))).toHaveText(
             'Você preencheu um ou mais campos com valor acima do permitido:\n\nBBAS3: Valor máximo de R$ 11.049,28\nVALE3: Valor máximo de R$ 8.143,44\n',
         );
